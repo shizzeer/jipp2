@@ -1,0 +1,1 @@
+# plik cmake tworzacy biblioteke
