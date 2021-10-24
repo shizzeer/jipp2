@@ -19,8 +19,9 @@ void printPositiveNumbers(int* arr, size_t n)
 
 void bubbleSort(int* arr, size_t n)
 {
-    bool change = false;
+    bool change;
     for (size_t i = 0; i < n; i++) {
+        change = false;
         for (size_t j = 0; j < n - 1; j++) {
             if (arr[j] > arr[j + 1]) {
                 change = true;
