@@ -46,4 +46,19 @@ double** multiplyByScalar(double** matrixA, int rows, int cols, double scalar);
 int** transpozeMatrix(int** matrixA, int rows, int cols);
 double** transpozeMatrix(double** matrixA, int rows, int cols);
 
+int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent);
+double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent);
+
+bool matrixIsDiagonal(int** matrixA, int rows, int cols);
+bool matrixIsDiagonal(double** matrixA, int rows, int cols);
+
+void swap(int& a, int& b);
+void swap(double& a, double& b);
+
+void sortRow(int* matrixRow, int cols);
+void sortRow(double* matrixRow, int cols);
+
+int** sortRowsInMatrix(int** matrixA, int rows, int cols);
+double** sortRowsInMatrix(double** matrixA, int rows, int cols);
+
 #endif //JIPP2_MATRIXLIB_H

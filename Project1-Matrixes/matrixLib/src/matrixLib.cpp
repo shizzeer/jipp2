@@ -25,8 +25,6 @@ void printHelp()
                  "-p - raising the matrix to the specified power\n"
                  "-d - calculate determinant of the matrix\n"
                  "-md - check if the matrix is diagonal\n"
-                 "-sw - swapping number [a] with [b] inside the matrix\n"
-                 "-srow - ???\n"
                  "-srows - sort each row in the matrix in the ascending order\n"
                  "help - prints helping note\n"
                  "Parameters:\n"
@@ -429,3 +427,215 @@ double** transpozeMatrix(double** matrixA, int rows, int cols)
     return matrixC;
 }
 
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - rows - the number of rows of the passed two-dimensional array.
+ *  - cols - the number of columns of the passed two-dimensional array.
+ * Return value: This function doesn't return a value.
+ * Description:
+ *  The function modifies the matrix such that it becomes an identity matrix.
+ */
+static void createIdentityMatrix(double** matrixA, int rows, int cols)
+{
+    fillArrayWithZeroes(matrixA, rows, cols);
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            if (row == col)
+                matrixA[row][col] = 1;
+        }
+    }
+}
+
+static void createIdentityMatrix(int** matrixA, int rows, int cols)
+{
+    fillArrayWithZeroes(matrixA, rows, cols);
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            if (row == col)
+                matrixA[row][col] = 1;
+        }
+    }
+}
+
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - rows - the number of rows of the passed two-dimensional array.
+ *  - cols - the number of columns of the passed two-dimensional array.
+ *  - exponent - the number used as exponent in the exponentiation of the matrix.
+ * Return value: This function returns matrixC such that matrixC is the product of rising
+ *               matrixA to the power of exponent (matrixC = matrixA**exponent)
+ * Description:
+ *  The function raises matrixA to the power of exponent.
+ */
+int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent)
+{
+    int** matrixC = allocMatrixInt(rows, cols);
+    if (!exponent) {
+        freeMatrix(matrixC, rows, cols);
+        int** identityMatrix = allocMatrixInt(rows, rows);
+        createIdentityMatrix(identityMatrix, rows, rows);
+        return identityMatrix;
+    }
+    else {
+        matrixC = matrixA;
+        for (int i = 1; i < exponent; i++)
+            matrixC = multiplyMatrix(matrixC, matrixA, rows, cols, cols);
+    }
+    return matrixC;
+}
+
+double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent)
+{
+    double** matrixC = allocMatrixDouble(rows, cols);
+    if (!exponent) {
+        freeMatrix(matrixC, rows, cols);
+        double** identityMatrix = allocMatrixDouble(rows, rows);
+        createIdentityMatrix(identityMatrix, rows, rows);
+        return identityMatrix;
+    }
+    else {
+        matrixC = matrixA;
+        for (int i = 1; i < exponent; i++)
+            matrixC = multiplyMatrix(matrixC, matrixA, rows, cols, cols);
+    }
+    return matrixC;
+}
+
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - rows - the number of rows of the passed two-dimensional array.
+ *  - cols - the number of columns of the passed two-dimensional array.
+ * Return value: This function returns true if a matrix is diagonal and false otherwise.
+ * Description:
+ *  The function checks if a matrix is diagonal.
+ */
+bool matrixIsDiagonal(int** matrixA, int rows, int cols)
+{
+    if (rows != cols)
+        return false;
+    else if (1 == rows == cols)
+        return true;
+    for (int row = 0; row < rows; row++) {
+        for (int col = 1; col < cols; col++) {
+            if (row == col)
+                continue;
+            else if (matrixA[row][col] != 0)
+                return false;
+        }
+    }
+    return true;
+}
+
+bool matrixIsDiagonal(double** matrixA, int rows, int cols)
+{
+    if (rows != cols)
+        return false;
+    else if (1 == rows == cols)
+        return true;
+    for (int row = 0; row < rows; row++) {
+        for (int col = 1; col < cols; col++) {
+            if (row == col)
+                continue;
+            else if (matrixA[row][col] != 0)
+                return false;
+        }
+    }
+    return true;
+}
+
+/*
+ * @params:
+ *  - a - a reference to the arbitrary number.
+ *  - b - a reference to the arbitrary number.
+ * Return value: This function doesn't return a value.
+ * Description:
+ *  The function swaps two numbers in its original places.
+ */
+void swap(int& a, int& b)
+{
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+
+void swap(double& a, double& b)
+{
+    double tmp = a;
+    a = b;
+    b = tmp;
+}
+
+/*
+ * @params:
+ *  - matrixRow - row of the matrix to sort.
+ *  - cols - the number of elements inside the row.
+ * Return value: This function doesn't return a value.
+ * Description:
+ *  The function sorts the given row of a matrix. It
+ *  uses optimized bubble sort as sorting algorithm.
+ */
+void sortRow(int* matrixRow, int cols)
+{
+    bool change;
+    for (int colOut = 0; colOut < cols; colOut++) {
+        change = false;
+        for (int colIn = 0; colIn < cols - 1; colIn++) {
+            if (matrixRow[colIn] > matrixRow[colIn + 1]) {
+                change = true;
+                swap(matrixRow[colIn], matrixRow[colIn + 1]);
+            }
+        }
+        if (!change)
+            break;
+    }
+}
+
+void sortRow(double* matrixRow, int cols)
+{
+    bool change;
+    for (int colOut = 0; colOut < cols; colOut++) {
+        change = false;
+        for (int colIn = 0; colIn < cols - 1; colIn++) {
+            if (matrixRow[colIn] > matrixRow[colIn + 1]) {
+                change = true;
+                swap(matrixRow[colIn], matrixRow[colIn + 1]);
+            }
+        }
+        if (!change)
+            break;
+    }
+}
+
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - rows - the number of rows of the passed two-dimensional array.
+ *  - cols - the number of columns of the passed two-dimensional array.
+ * Return value: This function doesn't return a value.
+ * Description:
+ *  The function sorts each row in the given matrix.
+ */
+int** sortRowsInMatrix(int** matrixA, int rows, int cols)
+{
+    int** matrixC = allocMatrixInt(rows, cols);
+    for (int row = 0; row < rows; row++) {
+        delete[] matrixC[row];
+        sortRow(matrixA[row], cols);
+        matrixC[row] = matrixA[row];
+    }
+    return matrixC;
+}
+
+double** sortRowsInMatrix(double** matrixA, int rows, int cols)
+{
+    double** matrixC = allocMatrixDouble(rows, cols);
+    for (int row = 0; row < rows; row++) {
+        delete[] matrixC[row];
+        sortRow(matrixA[row], cols);
+        matrixC[row] = matrixA[row];
+    }
+    return matrixC;
+}

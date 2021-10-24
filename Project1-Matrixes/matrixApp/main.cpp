@@ -172,7 +172,34 @@ int main(int argc, char* argv[])
             else if (cmd == "-p") {
                 unsigned int exponent;
                 getExponent(exponent);
-                /* KOD ODPOWIEDZIALNY ZA POTEGOWANIE */
+                resMatrixDouble = powerMatrix(matrixADouble, rows, cols, exponent);
+                std::cout << "Result of the operation" << std::endl;
+                freeMatrix(matrixADouble, rows, cols);
+                if (!exponent)
+                    cols = rows;
+                printMatrix(resMatrixDouble, cols, rows);
+                freeMatrix(resMatrixDouble, cols, rows);
+            }
+
+            /* check if given matrix is diagonal */
+            else if (cmd == "-md") {
+                printMatrix(matrixADouble, rows, cols);
+                if (matrixIsDiagonal(matrixADouble, rows, cols))
+                    std::cout << "Given matrix is diagonal" << std::endl;
+                else
+                    std::cout << "Given matrix is not diagonal" << std::endl;
+                freeMatrix(matrixADouble, rows, cols);
+            }
+
+            /* Sort rows of the given matrix */
+            else if (cmd == "-srows") {
+                std::cout << "Original matrix: " << std::endl;
+                printMatrix(matrixADouble, rows, cols);
+                std::cout << "Matrix after sorting rows operation: " << std::endl;
+                resMatrixDouble = sortRowsInMatrix(matrixADouble, rows, cols);
+                printMatrix(resMatrixDouble, rows, cols);
+                freeMatrix(matrixADouble, rows, cols);
+                delete[] resMatrixDouble;
             }
 
         } else {
@@ -207,15 +234,36 @@ int main(int argc, char* argv[])
             else if (cmd == "-p") {
                 unsigned int exponent;
                 getExponent(exponent);
-                /* KOD ODPOWIEDZIALNY ZA POTEGOWANIE */
+                resMatrixInt = powerMatrix(matrixAInt, rows, cols, exponent);
+                std::cout << "Result of the operation" << std::endl;
+                freeMatrix(matrixAInt, rows, cols);
+                if (!exponent)
+                    cols = rows;
+                printMatrix(resMatrixInt, cols, rows);
+                freeMatrix(resMatrixInt, cols, rows);
+            }
+
+            /* check if given matrix is diagonal */
+            else if (cmd == "-md") {
+                printMatrix(matrixAInt, rows, cols);
+                if (matrixIsDiagonal(matrixAInt, rows, cols))
+                    std::cout << "Given matrix is diagonal" << std::endl;
+                else
+                    std::cout << "Given matrix is not diagonal" << std::endl;
+                freeMatrix(matrixAInt, rows, cols);
+            }
+
+            /* Sort rows of the given matrix */
+            else if (cmd == "-srows") {
+                std::cout << "Original matrix: " << std::endl;
+                printMatrix(matrixAInt, rows, cols);
+                std::cout << "Matrix after sorting rows operation: " << std::endl;
+                resMatrixInt = sortRowsInMatrix(matrixAInt, rows, cols);
+                printMatrix(resMatrixInt, rows, cols);
+                freeMatrix(matrixAInt, rows, cols);
+                delete[] resMatrixInt;
             }
         }
-    }
-    else if (cmd == "-sw") {
-
-    }
-    else if (cmd == "-srow") {
-
     }
     else
         printHelp();
