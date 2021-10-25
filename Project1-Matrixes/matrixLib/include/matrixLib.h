@@ -49,6 +49,9 @@ double** transpozeMatrix(double** matrixA, int rows, int cols);
 int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent);
 double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent);
 
+int determinantMatrix(int** matrixA, int rows, int cols);
+double determinantMatrix(double** matrixA, int rows, int cols);
+
 bool matrixIsDiagonal(int** matrixA, int rows, int cols);
 bool matrixIsDiagonal(double** matrixA, int rows, int cols);
 

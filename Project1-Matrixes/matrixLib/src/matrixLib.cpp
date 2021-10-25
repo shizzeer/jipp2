@@ -480,7 +480,7 @@ int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent)
     }
     else {
         matrixC = matrixA;
-        for (int i = 1; i < exponent; i++)
+        for (unsigned int i = 1; i < exponent; i++)
             matrixC = multiplyMatrix(matrixC, matrixA, rows, cols, cols);
     }
     return matrixC;
@@ -497,10 +497,86 @@ double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent
     }
     else {
         matrixC = matrixA;
-        for (int i = 1; i < exponent; i++)
+        for (unsigned int i = 1; i < exponent; i++)
             matrixC = multiplyMatrix(matrixC, matrixA, rows, cols, cols);
     }
     return matrixC;
+}
+
+static void getCofactor(int** matrixA, int** cofactor, int rowA, int colA,
+                        int n)
+{
+    int rowCo = 0, colCo = 0;
+    for (int row = 0; row < n; row++) {
+        for (int col = 0; col < n; col++) {
+            if (row != rowA && col != colA) {
+                cofactor[rowCo][colCo++] = matrixA[row][col];
+                if (colCo == n - 1) {
+                    colCo = 0;
+                    rowCo++;
+                }
+            }
+        }
+    }
+}
+
+static void getCofactor(double** matrixA, double** cofactor, int rowA, int colA,
+                        int n)
+{
+    int rowCo = 0, colCo = 0;
+    for (int row = 0; row < n; row++) {
+        for (int col = 0; col < n; col++) {
+            if (row != rowA && col != colA) {
+                cofactor[rowCo][colCo++] = matrixA[row][col];
+                if (colCo == n - 1) {
+                    colCo = 0;
+                    rowCo++;
+                }
+            }
+        }
+    }
+}
+
+int determinantMatrix(int** matrixA, int rows, int cols)
+{
+    if (1 == rows == cols)
+        return matrixA[0][0];
+    else if (2 == rows == cols)
+        return matrixA[0][0] * matrixA[1][1] - matrixA[0][1] * matrixA[1][0];
+
+    int** cofactor = allocMatrixInt(rows, cols);
+    int sign = 1;
+    int determinant = 0;
+    /* Firstly, always the first row is processed */
+    for (int col = 0; col < cols; col++) {
+        /* matrixA is a square matrix so we can pass its size as cols or rows */
+        getCofactor(matrixA, cofactor, 0, col, cols);
+        determinant += sign * matrixA[0][col] * determinantMatrix(cofactor, rows - 1, cols - 1);
+        sign = -sign;
+    }
+    freeMatrix(cofactor, rows, cols);
+    return determinant;
+}
+
+double determinantMatrix(double** matrixA, int rows, int cols)
+{
+    if (1 == rows == cols)
+        return matrixA[0][0];
+    else if (2 == rows == cols)
+        return matrixA[0][0] * matrixA[1][1] - matrixA[0][1] * matrixA[1][0];
+
+    double** cofactor = allocMatrixDouble(rows, cols);
+    double sign = 1;
+    double determinant = 0;
+    /* Firstly, always the first row is processed */
+    for (int col = 0; col < cols; col++) {
+        /* matrixA is a square matrix so we can pass its size as cols or rows */
+        getCofactor(matrixA, cofactor, 0, col, cols);
+        determinant += sign * matrixA[0][col] * determinantMatrix(cofactor, rows - 1, cols - 1);
+        sign = -sign;
+    }
+    freeMatrix(cofactor, rows, cols);
+    return determinant;
 }
 
 /*

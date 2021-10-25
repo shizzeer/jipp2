@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
 
 #include "matrixLib.h"
 
@@ -31,7 +30,6 @@ int main(int argc, char* argv[])
 
     const std::string cmd = std::string(argv[1]);
     std::string parameter;
-    std::unordered_map<std::string, short> numberOfParamsInCmd;
 
     setMathOperationsType(parameter, argc, argv);
 
@@ -181,6 +179,13 @@ int main(int argc, char* argv[])
                 freeMatrix(resMatrixDouble, cols, rows);
             }
 
+            /* calculating determinant of a matrix */
+            else if (cmd == "-d") {
+                double determinant = determinantMatrix(matrixADouble, rows, cols);
+                std::cout << "Given matrix determinant = " << determinant << std::endl;
+                freeMatrix(matrixADouble, rows, cols);
+            }
+
             /* check if given matrix is diagonal */
             else if (cmd == "-md") {
                 printMatrix(matrixADouble, rows, cols);
@@ -241,6 +246,13 @@ int main(int argc, char* argv[])
                     cols = rows;
                 printMatrix(resMatrixInt, cols, rows);
                 freeMatrix(resMatrixInt, cols, rows);
+            }
+
+            /* calculating determinant of a matrix */
+            else if (cmd == "-d") {
+                int determinant = determinantMatrix(matrixAInt, rows, cols);
+                std::cout << "Given matrix determinant = " << determinant << std::endl;
+                freeMatrix(matrixAInt, rows, cols);
             }
 
             /* check if given matrix is diagonal */
