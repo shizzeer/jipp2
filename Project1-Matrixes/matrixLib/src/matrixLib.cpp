@@ -461,15 +461,15 @@ static void createIdentityMatrix(int** matrixA, int rows, int cols)
 /*
  * @params:
  *  - matrixA - the pointer to the matrix A.
+ *  - exponent - the number used as exponent in the exponentiation of the matrix.
  *  - rows - the number of rows of the passed two-dimensional array.
  *  - cols - the number of columns of the passed two-dimensional array.
- *  - exponent - the number used as exponent in the exponentiation of the matrix.
  * Return value: This function returns matrixC such that matrixC is the product of rising
  *               matrixA to the power of exponent (matrixC = matrixA**exponent)
  * Description:
  *  The function raises matrixA to the power of exponent.
  */
-int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent)
+int** powerMatrix(int** matrixA, unsigned int exponent, int rows, int cols)
 {
     int** matrixC = allocMatrixInt(rows, cols);
     if (!exponent) {
@@ -486,7 +486,7 @@ int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent)
     return matrixC;
 }
 
-double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent)
+double** powerMatrix(double** matrixA, unsigned int exponent, int rows, int cols)
 {
     double** matrixC = allocMatrixDouble(rows, cols);
     if (!exponent) {
@@ -503,15 +503,30 @@ double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent
     return matrixC;
 }
 
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - cofactor - the pointer to the submatrix which is called cofactor.
+ *               Cofactor is the number you get when you remove the column
+ *               and row of a designated element in a matrix, which is just a numerical
+ *               grid in the form of rectangle or a square.
+ *  - rowA - the number of rows of the matrix A.
+ *  - colA - the number of columns of the matrix A.
+ *  - sizeOfMatA - the size of the square matrix A.
+ * Return value: This function doesn't return a value.
+ * Description:
+ *  The function writes the cofactor taken from the matrix A to the temporary
+ *  matrix called cofactor.
+ */
 static void getCofactor(int** matrixA, int** cofactor, int rowA, int colA,
-                        int n)
+                        int sizeOfMatA)
 {
     int rowCo = 0, colCo = 0;
-    for (int row = 0; row < n; row++) {
-        for (int col = 0; col < n; col++) {
+    for (int row = 0; row < sizeOfMatA; row++) {
+        for (int col = 0; col < sizeOfMatA; col++) {
             if (row != rowA && col != colA) {
                 cofactor[rowCo][colCo++] = matrixA[row][col];
-                if (colCo == n - 1) {
+                if (colCo == sizeOfMatA - 1) {
                     colCo = 0;
                     rowCo++;
                 }
@@ -521,14 +536,14 @@ static void getCofactor(int** matrixA, int** cofactor, int rowA, int colA,
 }
 
 static void getCofactor(double** matrixA, double** cofactor, int rowA, int colA,
-                        int n)
+                        int sizeOfMatA)
 {
     int rowCo = 0, colCo = 0;
-    for (int row = 0; row < n; row++) {
-        for (int col = 0; col < n; col++) {
+    for (int row = 0; row < sizeOfMatA; row++) {
+        for (int col = 0; col < sizeOfMatA; col++) {
             if (row != rowA && col != colA) {
                 cofactor[rowCo][colCo++] = matrixA[row][col];
-                if (colCo == n - 1) {
+                if (colCo == sizeOfMatA - 1) {
                     colCo = 0;
                     rowCo++;
                 }
@@ -537,6 +552,15 @@ static void getCofactor(double** matrixA, double** cofactor, int rowA, int colA,
     }
 }
 
+/*
+ * @params:
+ *  - matrixA - the pointer to the matrix A.
+ *  - rows - the number of rows of the passed two-dimensional array.
+ *  - cols - the number of columns of the passed two-dimensional array.
+ * Return value: This function returns a determinant of the passed matrix.
+ * Description:
+ *  The function calculates a determinant of the passed matrix.
+ */
 int determinantMatrix(int** matrixA, int rows, int cols)
 {
     if (1 == rows == cols)

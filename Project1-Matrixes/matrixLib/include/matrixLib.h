@@ -46,8 +46,8 @@ double** multiplyByScalar(double** matrixA, int rows, int cols, double scalar);
 int** transpozeMatrix(int** matrixA, int rows, int cols);
 double** transpozeMatrix(double** matrixA, int rows, int cols);
 
-int** powerMatrix(int** matrixA, int rows, int cols, unsigned int exponent);
-double** powerMatrix(double** matrixA, int rows, int cols, unsigned int exponent);
+int** powerMatrix(int** matrixA, unsigned int exponent, int rows, int cols);
+double** powerMatrix(double** matrixA, unsigned int exponent, int rows, int cols);
 
 int determinantMatrix(int** matrixA, int rows, int cols);
 double determinantMatrix(double** matrixA, int rows, int cols);

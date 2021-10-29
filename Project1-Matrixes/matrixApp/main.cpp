@@ -9,6 +9,15 @@
 
 #define MAX_NUMBER_OF_ARGS 4
 
+/*
+ * @params:
+ *  - parameter - the parameter is the last option passed with the command in the console.
+ *  - argc - the number of program arguments
+ *  - argv - an array with the program arguments
+ * Return value: The function doesn't return a value.
+ * Description:
+ *  The function prints an information to the user about the chosen number type.
+*/
 void setMathOperationsType(std::string& parameter, int argc, char* argv[])
 {
     parameter = std::string(argv[argc - 1]);
@@ -79,7 +88,6 @@ int main(int argc, char* argv[])
     }
     else if (cmd == "-m") {
         int colsA;
-        /* Najpierw wczytujemy ilosc wierszy oraz kolumn pierwszej macierzy. */
         while (!getSizeOfMatrix(rows, cols, false)) {
             std::cout << "Size of a matrix need to be provided as positive number." << std::endl;
             std::cin.clear();
@@ -89,8 +97,6 @@ int main(int argc, char* argv[])
             matrixADouble = allocMatrixDouble(rows, cols);
             initMatrix(matrixADouble, rows, cols);
             colsA = cols;
-            /* Druga macierz musi mieć tyle wierszy co pierwsza kolumn. Pobieramy
-             * wiec jedynie ilosc kolumn od uzytkownika. */
             std::cout << "The number of rows of the second matrix has to be equal"
                          " to the number of columns of the first matrix."
                          "Therefore you need to specify the number of columns only.\n";
@@ -170,7 +176,7 @@ int main(int argc, char* argv[])
             else if (cmd == "-p") {
                 unsigned int exponent;
                 getExponent(exponent);
-                resMatrixDouble = powerMatrix(matrixADouble, rows, cols, exponent);
+                resMatrixDouble = powerMatrix(matrixADouble, exponent, rows, cols);
                 std::cout << "Result of the operation" << std::endl;
                 freeMatrix(matrixADouble, rows, cols);
                 if (!exponent)
@@ -239,7 +245,7 @@ int main(int argc, char* argv[])
             else if (cmd == "-p") {
                 unsigned int exponent;
                 getExponent(exponent);
-                resMatrixInt = powerMatrix(matrixAInt, rows, cols, exponent);
+                resMatrixInt = powerMatrix(matrixAInt, exponent, rows, cols);
                 std::cout << "Result of the operation" << std::endl;
                 freeMatrix(matrixAInt, rows, cols);
                 if (!exponent)
