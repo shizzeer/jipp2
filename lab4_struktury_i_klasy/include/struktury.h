@@ -14,4 +14,6 @@ struct samochod {
 };
 void zadanie1(struct samochod samochody[], size_t n);
 void zadanie2(struct samochod samochody[]);
+void zadanie3(struct samochod samochody[], size_t n);
+size_t zadanie4(struct samochod samochody[], size_t n);
 #endif //JIPP2_STRUKTURY_H
